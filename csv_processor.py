@@ -11,11 +11,30 @@ def read_file(filename):
         print(f"File {filename} does not exist")
 
 
+def is_num(value):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
+
+
+def process_data(data):
+    filtered = [row for row in data if is_num(row["Age"]) and is_num(row["Salary"])]
+
+    processed = [
+        {**row, "Name": row["Name"].upper(), "Salary": round(float(row["Salary"]), 2)}
+        for row in filtered
+    ]
+
+    return processed
+
+
 def main():
     data = read_file("data.csv")
     if data:
-        for elem in data:
-            print(elem)
+        print(process_data(data))
+
     else:
         print("File is empty or its content is not valid csv")
 
