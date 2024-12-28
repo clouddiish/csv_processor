@@ -19,20 +19,27 @@ def is_num(value):
         return False
 
 
-def process_data(data):
-    filtered = [row for row in data if is_num(row["Age"]) and is_num(row["Salary"])]
+def process_data(dict):
+    try:
+        filtered = [row for row in dict if is_num(row["Age"]) and is_num(row["Salary"])]
 
-    processed = [
-        {
-            **row,
-            "Name": row["Name"].upper(),
-            "Salary": round(float(row["Salary"]), 2),
-            "Tax": round(0.1 * float(row["Salary"]), 2),
-        }
-        for row in filtered
-    ]
+        processed = [
+            {
+                **row,
+                "Name": row["Name"].upper(),
+                "Salary": round(float(row["Salary"]), 2),
+                "Tax": round(0.1 * float(row["Salary"]), 2),
+            }
+            for row in filtered
+        ]
 
-    return processed
+        return processed
+
+    except KeyError:
+        print("Missing required column in csv file")
+
+    except TypeError:
+        print("Provided data must be a dictionary")
 
 
 def main():
