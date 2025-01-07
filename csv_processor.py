@@ -2,6 +2,20 @@ import csv
 
 
 def read_file(filename):
+    """
+    Reads a CSV file and returns its content as a list of dictionaries.
+
+    Args:
+        filename (str): The name of the CSV file to read.
+
+    Returns:
+        list[dict]: A list of dictionaries containing the rows of the CSV file.
+        None: If the file is not found or an error occurs.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        Exception: For any other unexpected errors.
+    """
     try:
         with open(filename, "r") as f:
             reader = csv.DictReader(f)
@@ -16,6 +30,18 @@ def read_file(filename):
 
 
 def is_num(value):
+    """
+    Checks if a given value is numeric (float or int).
+
+    Args:
+        value (str): The value to check.
+
+    Returns:
+        bool: True if the value is numeric, False otherwise.
+
+    Raises:
+        Exception: For any unexpected errors during validation.
+    """
     try:
         float(value)
         return True
@@ -28,6 +54,23 @@ def is_num(value):
 
 
 def process_data(dict):
+    """
+    Processes the input data by filtering rows with numeric values for 'Age'
+    and 'Salary', converting 'Name' to uppercase, rounding 'Salary', and
+    calculating 'Tax'.
+
+    Args:
+        dict (list[dict]): A list of dictionaries representing the data.
+
+    Returns:
+        list[dict]: A list of processed dictionaries with 'Name', 'Salary',
+                    and 'Tax' columns modified or added.
+
+    Raises:
+        KeyError: If required columns ('Age', 'Salary', or 'Name') are missing.
+        TypeError: If the input data is not a list of dictionaries.
+        Exception: For any other unexpected errors.
+    """
     try:
         filtered = [row for row in dict if is_num(row["Age"]) and is_num(row["Salary"])]
 
@@ -54,6 +97,17 @@ def process_data(dict):
 
 
 def write_file(filename, data):
+    """
+    Writes processed data to a CSV file.
+
+    Args:
+        filename (str): The name of the output CSV file.
+        data (list[dict]): The processed data to write, where each dictionary
+                           represents a row.
+
+    Raises:
+        Exception: For any unexpected errors during file writing.
+    """
     try:
         with open(filename, "w", newline="") as f:
             headers = list(data[0].keys())
@@ -64,6 +118,16 @@ def write_file(filename, data):
 
 
 def main():
+    """
+    Main function that orchestrates the reading, processing, and writing
+    of CSV data.
+
+    Reads data from a CSV file, processes the data, and writes the results
+    to a new CSV file.
+
+    Raises:
+        Exception: For any unexpected errors during execution.
+    """
     input_file = "data.csv"
     output_file = "output_data.csv"
 
